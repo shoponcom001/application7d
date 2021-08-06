@@ -6,25 +6,32 @@ class User < ApplicationRecord
 
   has_many :books, dependent: :destroy
   attachment :profile_image
+  
+  has_many :likes
+  def liked_by?(book_id)
+    likes.where(book_id: book_id).exists?
+  end
+  
+  has_many :comments, dependent: :destroy
 
   validates :name, length: { minimum: 2, maximum: 20 }, uniqueness: true
   validates :introduction, length: { maximum: 50 }
   
-  has_many :following_relationships, foreign_key: "follower_id", class_name: "Relationship", dependent: :destroy
-  has_many :following, through: :following_relationships
-  has_many :follower_relationships, foreign_key: "following_id", class_name: "Relationship", dependent: :destroy
-  has_many :followers, through: :follower_relationships
-  
-  def following?(user)
-    following_relationships.find_by(following_id: user.id)
-  end
-  
-  def follow(user)
-    following_relationships.create!(following_id: user.id)
-  end
-  
-  def unfollow(user)
-    following_relationships.find_by(following_id user.id).destroy
+  has_many :reverse_of_relationships, class_name: "Relationship", foreign_key: "followed_id", dependent: :destroy
+  has_many :relationships, class_name: "Relationship", foreign_key: "follower_id", dependent: :destroy
+  has_many :followers, through: :reverse_of_relationships, source: :follower
+  has_many :followings, through: :relationships, source: :followed
+
+  def follow(user_id)
+    relationships.create(followed_id: user_id)
   end
 
+  def unfollow(user_id)
+    relationships.find_by(followed_id: user_id).destroy
+  end
+
+  def following?(user)
+    followings.include?(user)
+  end
+  
 end

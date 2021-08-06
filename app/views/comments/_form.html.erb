@@ -1,0 +1,8 @@
+<%= form_with model: [book, comment] do |f| %>
+  <div>
+    <%= f.text_area :comment %>
+  </div>
+  <div>
+    <%= f.submit "comment" %>
+  </div>
+<% end %>
