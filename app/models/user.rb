@@ -11,6 +11,7 @@ class User < ApplicationRecord
   def liked_by?(book_id)
     likes.where(book_id: book_id).exists?
   end
+  has_many :liked_books, through: :likes, source: :book
   
   has_many :comments, dependent: :destroy
 
@@ -33,5 +34,8 @@ class User < ApplicationRecord
   def following?(user)
     followings.include?(user)
   end
+  
+  has_many :user_rooms, dependent: :destroy
+  has_many :chats, dependent: :destroy
   
 end

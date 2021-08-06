@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  get 'chats/show'
  devise_for :users
 
   root to: "homes#top"
@@ -11,6 +12,9 @@ Rails.application.routes.draw do
   resources :books, only: [:index, :show, :edit, :create, :destroy, :update] do
     resources :comments, only: [:create, :destroy]
   end
+  
+
+  resources :chats, only: [:create, :show]
   
   resources :users, only: [:index, :show, :edit, :update] do
   	resource :relationships, only: [:create, :destroy]
