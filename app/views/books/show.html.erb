@@ -33,6 +33,9 @@
               <%= link_to "Destroy", book_path(@book), method: :delete, class: "btn btn-sm btn-danger" %>
             </td>
             <% end %>
+            <td>
+              閲覧数:<%= @book.impressionist_count %>
+            </td>
           </tr>
         </tbody>
       </table>

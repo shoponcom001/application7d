@@ -1,6 +1,7 @@
 class BooksController < ApplicationController
     before_action :authenticate_user!
     before_action :corrent_book, only: [:edit, :update]
+    impressionist :actions=> [:show]
 
   def corrent_book
     @book = Book.find(params[:id])
@@ -37,6 +38,7 @@ class BooksController < ApplicationController
     @user = @book.user
     @comment = Comment.new
     @comments = @book.comments
+    impressionist(@book, nil, unique: [:ip_address])
   end
 
   def edit
