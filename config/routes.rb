@@ -13,8 +13,11 @@ Rails.application.routes.draw do
     resources :comments, only: [:create, :destroy]
   end
   
-
   resources :chats, only: [:create, :show]
+  
+  resources :groups do
+    get "join" => "groups#join"
+  end
   
   resources :users, only: [:index, :show, :edit, :update] do
   	resource :relationships, only: [:create, :destroy]

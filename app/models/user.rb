@@ -7,6 +7,9 @@ class User < ApplicationRecord
   has_many :books, dependent: :destroy
   attachment :profile_image
   
+  has_many :group_users
+  has_many :groups, through: :group_users
+  
   has_many :likes
   def liked_by?(book_id)
     likes.where(book_id: book_id).exists?
